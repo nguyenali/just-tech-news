@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { User } = require('../../models');
+const { User, Post, Vote } = require("../../models");
 
 // GET /api/users
 router.get('/', (req, res) => {
@@ -55,7 +55,20 @@ router.post('/', (req, res) => {
       User.findOne({
         where: {
           email: req.body.email
-        }
+        },
+        // replace the existing `include` with this
+include: [
+  {
+    model: Post,
+    attributes: ['id', 'title', 'post_url', 'created_at']
+  },
+  {
+    model: Post,
+    attributes: ['title'],
+    through: Vote,
+    as: 'voted_posts'
+  }
+]
       }).then(dbUserData => {
         if (!dbUserData) {
           res.status(400).json({ message: 'No user with that email address!' });
