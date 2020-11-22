@@ -93,8 +93,9 @@ Vote.create({
       console.log(err);
       res.status(400).json(err);
     });
-
+})
 });
+
 
 //Update a Post's Title
 router.put('/:id', (req, res) => {
@@ -140,4 +141,5 @@ router.delete('/:id', (req, res) => {
         res.status(500).json(err);
       });
   });
+
 module.exports = router;
